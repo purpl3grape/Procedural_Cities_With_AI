@@ -9,7 +9,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{402ECCBD-7254-F0C5-98D8-3746321182A9}</ProjectGuid>
+    <ProjectGuid>{CF153347-788D-9CC4-7BA6-730D0D372039}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp</AssemblyName>
@@ -53,6 +53,7 @@
     <UnityVersion>2020.1.13f1</UnityVersion>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\A-Star Path Finding\PlayerMove.cs" />
     <Compile Include="Assets\Scripts\A-Star Path Finding\PathFinding.cs" />
     <Compile Include="Assets\Scripts\L-System Procedural City\Direction.cs" />
     <Compile Include="Assets\Scripts\L-System Procedural City\RoadHelper.cs" />
@@ -70,7 +71,6 @@
     <Compile Include="Assets\Scripts\L-System Procedural City\SimpleVisualizer.cs" />
     <Compile Include="Assets\Scripts\L-System Procedural City\AgentParameters.cs" />
     <Compile Include="Assets\Scripts\A-Star Path Finding\Old\Grid.cs" />
-    <Compile Include="Assets\Scripts\A-Star Path Finding\PlayerMove.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

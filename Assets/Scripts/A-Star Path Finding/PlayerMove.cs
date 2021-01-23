@@ -37,19 +37,22 @@ public class PlayerMove : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        
+
         rb.angularDrag = 0;
         rb.angularVelocity = Vector3.zero;
         rb.velocity = Vector3.zero;
         rb.drag = 0;
-        
+
         if (playerMoveState == PlayerMoveState.ArrivedAtTarget)
         {
             if (Vector3.Distance(tr.position, pathFinding.TargetPosition.position) > 2)
             {
                 FinalPath = pathFinding.FindPath(tr.position, pathFinding.TargetPosition.position);//Find a path to the goal
                 currentFinalPathNumber = 0;
-                playerMoveState = PlayerMoveState.MovingToTarget;
+                if (FinalPath != null)
+                {
+                    playerMoveState = PlayerMoveState.MovingToTarget;
+                }
             }
         }
 
@@ -80,6 +83,17 @@ public class PlayerMove : MonoBehaviour
         refreshTargetPath = null;
     }
 
+    private IEnumerator getAlternateRoute;
+    private IEnumerator GetAlternateRoute()
+    {
+        yield return new WaitForSeconds(2);
+        FinalPath = pathFinding.FindPath(tr.position, pathFinding.TargetPosition.position);//Find a path to the goal
+        lastNodeVisited.bIsPlayer = false;
+        currentFinalPathNumber = 0;
+
+        getAlternateRoute = null;
+    }
+
     float distanceToNode = 0.1f;
     RaycastHit hit;
     float accelRate;
@@ -88,6 +102,7 @@ public class PlayerMove : MonoBehaviour
     float targetDecelRate = 45;
     private void MovePlayer()
     {
+        if (FinalPath == null) return;
         if (FinalPath.Count > 0)
         {
             //yield return new WaitForSeconds(3);
@@ -109,14 +124,18 @@ public class PlayerMove : MonoBehaviour
             {
                 accelRate = 0f;
 
-                Debug.Log("Hit Something: " + hit.transform.name);
+                //Debug.Log("Hit Something: " + hit.transform.name);
                 speed = Mathf.Lerp(MaxSpeed, 0f, decelRate / targetDecelRate);
                 decelRate += Time.fixedDeltaTime * 100;
                 //speed = 0;
 
-                FinalPath = pathFinding.FindPath(tr.position, pathFinding.TargetPosition.position);//Find a path to the goal
-                lastNodeVisited.bIsPlayer = false;
-                currentFinalPathNumber = 0;
+                if (getAlternateRoute == null) {
+                    getAlternateRoute = GetAlternateRoute();
+                    StartCoroutine(getAlternateRoute);
+                }
+                //FinalPath = pathFinding.FindPath(tr.position, pathFinding.TargetPosition.position);//Find a path to the goal
+                //lastNodeVisited.bIsPlayer = false;
+                //currentFinalPathNumber = 0;
 
             }
             else
